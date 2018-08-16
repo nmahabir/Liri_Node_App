@@ -6,11 +6,34 @@ var key = require("./key.js");
 
 var input1 = process.argv[2];
 var input2 = process.argv[3];
+// console.log(process.env.OMDB_API);
 
 var spotify = new Spotify(key.spotify);
 var client = new Twitter(key.twitter);
 var queryURL =
-  "http://www.omdbapi.com/?t=" + input2 + "&y=&plot=short&apikey=trilogy";
+  "http://www.omdbapi.com/?t=" +
+  input2 +
+  "&y=&plot=short&apikey=" +
+  process.env.OMDB_API;
+
+// function twitter()
+
+// function spotify()
+
+// function argv()
+
+// function omdb()
+
+// function notepad()
+
+// try to avoid lots of code in the body of the switch, instead run a function eg. return twitter() (where twitter etc are defined functions)
+// create a function that can take in the arg[v] so that the switch can use the single response from this function
+
+// Twitter API
+
+// Read docs
+// Use the get request for this assignment
+// loop thru the responses versus hard coding them
 
 switch (input1) {
   case "spotify-this-song" && input2 !== undefined:
