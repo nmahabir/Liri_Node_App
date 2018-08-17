@@ -6,6 +6,8 @@ var key = require("./key.js");
 
 var input1 = process.argv[2];
 var input2 = process.argv[3];
+var arrayOfInputs = [input1, input2];
+
 // console.log(process.env.OMDB_API);
 
 var spotify = new Spotify(key.spotify);
@@ -16,15 +18,30 @@ var queryURL =
   "&y=&plot=short&apikey=" +
   process.env.OMDB_API;
 
-// function twitter()
+function argv(argvArray) {
+  switch (argvArray) {
+    case argvArray[1] === "my-tweets":
+      return argvArray[1];
+    case argvArray[1] === "spotify-this-song":
+      if (argvArray[2] !== undefined) {
+        return argvArray[2];
+      }
+      return "Sunrise Kygo";
+  }
+}
 
-// function spotify()
-
-// function argv()
+function spotify(song) {
+  spotify.search({ type: "track", query: song }, function(err, data) {
+    if (!err) {
+    }
+  });
+}
 
 // function omdb()
 
 // function notepad()
+
+// function twitter()
 
 // try to avoid lots of code in the body of the switch, instead run a function eg. return twitter() (where twitter etc are defined functions)
 // create a function that can take in the arg[v] so that the switch can use the single response from this function
@@ -35,7 +52,7 @@ var queryURL =
 // Use the get request for this assignment
 // loop thru the responses versus hard coding them
 
-switch (input1) {
+switch (process.argv) {
   case "spotify-this-song" && input2 !== undefined:
     spotify.search({ type: "track", query: input2 }, function(err, data) {
       if (err) {
