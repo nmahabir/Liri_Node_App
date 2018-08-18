@@ -21,21 +21,57 @@ var queryURL =
 function argv(argvArray) {
   switch (argvArray) {
     case argvArray[1] === "my-tweets":
-      return argvArray[1];
+      console.log(argvArray[1]);
+      return argvArray[1] + console.log(argvArray[1]);
     case argvArray[1] === "spotify-this-song":
       if (argvArray[2] !== undefined) {
-        return argvArray[2];
+        return argvArray[2] + console.log(argvArray[2]);
       }
-      return "Sunrise Kygo";
+      return argvArray.push("Sunrise") + console.log("Sunrise");
+    // next case comes here
   }
 }
+console.log(arrayOfInputs);
+// argv(arrayOfInputs);
 
-function spotify(song) {
-  spotify.search({ type: "track", query: song }, function(err, data) {
+function spotifyThis(song) {
+  spotify.search({ type: "track", query: song, limit: 20 }, function(
+    err,
+    data
+  ) {
     if (!err) {
+      // for (var i = 0; i++; data.tracks.items.length) {
+      //   if (song === data.tracks.items[i].name) {
+      var album = data.tracks.items[0].album.name;
+      var artist = data.tracks.items[0].artists[0].name;
+      var title = data.tracks.items[0].name;
+      var preview = data.tracks.items[0].preview_url;
+      return console.log(
+        "Song Title: " +
+          title +
+          " Artist(s): " +
+          artist +
+          " Album: " +
+          album +
+          " Preview Link: " +
+          preview
+      );
     }
+    //   }
+    // }
   });
 }
+
+// spotify.search({ type: "track", query: "sunrise", limit: 20 }, function(
+//   err,
+//   data
+// ) {
+//   if (!err) {
+//     console.log(data);
+//   }
+// });
+console.log("AOI: " + arrayOfInputs[2]);
+spotifyThis(arrayOfInputs[2]);
 
 // function omdb()
 
@@ -52,55 +88,55 @@ function spotify(song) {
 // Use the get request for this assignment
 // loop thru the responses versus hard coding them
 
-switch (process.argv) {
-  case "spotify-this-song" && input2 !== undefined:
-    spotify.search({ type: "track", query: input2 }, function(err, data) {
-      if (err) {
-        return console.log("Spotify Error: " + err);
-      } else {
-        // console.log(data.tracks.items[1]);
-        // Returns the data for the first result
-        var album = data.tracks.items[1].album.name;
-        var artist = data.tracks.items[1].artists[0].name;
-        var title = data.tracks.items[1].name;
-        var preview = data.tracks.items[1].preview_url;
-        return console.log(
-          "Song Title: " +
-            title +
-            " Artist(s): " +
-            artist +
-            " Album: " +
-            album +
-            " Preview Link: " +
-            preview
-        );
-      }
-    });
+// switch (process.argv) {
+//   case "spotify-this-song" && input2 !== undefined:
+//     spotify.search({ type: "track", query: input2 }, function(err, data) {
+//       if (err) {
+//         return console.log("Spotify Error: " + err);
+//       } else {
+//         // console.log(data.tracks.items[1]);
+//         // Returns the data for the first result
+//         var album = data.tracks.items[1].album.name;
+//         var artist = data.tracks.items[1].artists[0].name;
+//         var title = data.tracks.items[1].name;
+//         var preview = data.tracks.items[1].preview_url;
+//         return console.log(
+//           "Song Title: " +
+//             title +
+//             " Artist(s): " +
+//             artist +
+//             " Album: " +
+//             album +
+//             " Preview Link: " +
+//             preview
+//         );
+//       }
+//     });
 
-  case "spotify-this-song":
-    spotify.search({ type: "track", query: "Ace of Base" }, function(
-      err,
-      data
-    ) {
-      if (err) {
-        return console.log("Spotify Error: " + err);
-      } else {
-        // console.log(data.tracks.items[1]);
-        // Returns the data for the first result
-        var album = data.tracks.items[1].album.name;
-        var artist = data.tracks.items[1].artists[0].name;
-        var title = data.tracks.items[1].name;
-        var preview = data.tracks.items[1].preview_url;
-        return console.log(
-          "Song Title: " +
-            title +
-            " Artist(s): " +
-            artist +
-            " Album: " +
-            album +
-            " Preview Link: " +
-            preview
-        );
-      }
-    });
-}
+//   case "spotify-this-song":
+//     spotify.search({ type: "track", query: "Ace of Base" }, function(
+//       err,
+//       data
+//     ) {
+//       if (err) {
+//         return console.log("Spotify Error: " + err);
+//       } else {
+//         // console.log(data.tracks.items[1]);
+//         // Returns the data for the first result
+//         var album = data.tracks.items[1].album.name;
+//         var artist = data.tracks.items[1].artists[0].name;
+//         var title = data.tracks.items[1].name;
+//         var preview = data.tracks.items[1].preview_url;
+//         return console.log(
+//           "Song Title: " +
+//             title +
+//             " Artist(s): " +
+//             artist +
+//             " Album: " +
+//             album +
+//             " Preview Link: " +
+//             preview
+//         );
+//       }
+//     });
+// }
