@@ -4,76 +4,119 @@ var Spotify = require("node-spotify-api");
 var Twitter = require("twitter");
 var key = require("./key.js");
 
-var input1 = process.argv[2];
-var input2 = process.argv[3];
-var arrayOfInputs = [input1, input2];
+var arrayOfInputs = [];
 
-// console.log(process.env.OMDB_API);
+for (var i = 2; i < process.argv.length; i++) {
+  arrayOfInputs.push(process.argv[i]);
+}
 
 var spotify = new Spotify(key.spotify);
 var client = new Twitter(key.twitter);
+
+var movie = "";
+for (var i = 1; i < arrayOfInputs.length; i++) {
+  if (i > 1 && i < arrayOfInputs.length) {
+    movie = movie + "+" + arrayOfInputs[i];
+  } else {
+    movie += arrayOfInputs[i];
+  }
+}
 var queryURL =
   "http://www.omdbapi.com/?t=" +
-  input2 +
+  movie +
   "&y=&plot=short&apikey=" +
   process.env.OMDB_API;
 
 function argv(argvArray) {
-  switch (argvArray) {
-    case argvArray[1] === "my-tweets":
-      console.log(argvArray[1]);
-      return argvArray[1] + console.log(argvArray[1]);
-    case argvArray[1] === "spotify-this-song":
-      if (argvArray[2] !== undefined) {
-        return argvArray[2] + console.log(argvArray[2]);
+  switch (argvArray[0]) {
+    case "my-tweets":
+      console.log(argvArray[0]);
+      return argvArray[0];
+    case "spotify-this-song":
+      if (argvArray[1] === undefined) {
+        argvArray.push("Sunrise");
+        return argvArray[1];
       }
-      return argvArray.push("Sunrise") + console.log("Sunrise");
+      return argvArray[1];
+    case "movie-this":
+      if (argvArray[1] === undefined) {
+        argvArray.push("Mr. Nobody");
+        return argvArray[[1]];
+      }
+      argvArray.shift();
+
     // next case comes here
   }
 }
 console.log(arrayOfInputs);
-// argv(arrayOfInputs);
+argv(arrayOfInputs);
+console.log(arrayOfInputs);
 
-function spotifyThis(song) {
-  spotify.search({ type: "track", query: song, limit: 20 }, function(
-    err,
-    data
-  ) {
-    if (!err) {
-      // for (var i = 0; i++; data.tracks.items.length) {
-      //   if (song === data.tracks.items[i].name) {
-      var album = data.tracks.items[0].album.name;
-      var artist = data.tracks.items[0].artists[0].name;
-      var title = data.tracks.items[0].name;
-      var preview = data.tracks.items[0].preview_url;
-      return console.log(
-        "Song Title: " +
-          title +
-          " Artist(s): " +
-          artist +
-          " Album: " +
-          album +
-          " Preview Link: " +
-          preview
+function spotifyThis() {
+  spotify.search(
+    { type: "track", query: arrayOfInputs[1], limit: 20 },
+    function(err, data) {
+      if (!err) {
+        // for (var i = 0; i++; data.tracks.items.length) {
+        //   if (song === data.tracks.items[i].name) {
+        var album = data.tracks.items[0].album.name;
+        var artist = data.tracks.items[0].artists[0].name;
+        var title = data.tracks.items[0].name;
+        var preview = data.tracks.items[0].preview_url;
+        return console.log(
+          "Song Title: " +
+            title +
+            " Artist(s): " +
+            artist +
+            " Album: " +
+            album +
+            " Preview Link: " +
+            preview
+        );
+      }
+      //   }
+      // }
+    }
+  );
+}
+// spotifyThis();
+
+function omdb() {
+  request(queryURL, function(err, res, data) {
+    if (!err && res.statusCode === 200) {
+      // console.log(JSON.parse(data));
+      var movieTitle = JSON.parse(data).Title;
+      console.log(movieTitle);
+      var releaseYear = JSON.parse(data).Year;
+      var imdb = JSON.parse(data).imdbRating;
+      var rottenTomatoes = JSON.parse(data).Ratings[1].Value;
+      var moviePlot = JSON.parse(data).Plot;
+
+      var movieLanguage = JSON.parse(data).Language;
+      var location = JSON.parse(data).Country;
+      var movieActors = JSON.parse(data).Actors;
+      console.log(
+        "Movie Title: " +
+          movieTitle +
+          "Release Year: " +
+          releaseYear +
+          "IMDB Rating: " +
+          imdb +
+          "Rotten Tomatoes Rating: " +
+          rottenTomatoes +
+          "Plot: " +
+          moviePlot +
+          "Language: " +
+          movieLanguage +
+          "Location: " +
+          location +
+          "Actors: " +
+          movieActors
       );
     }
-    //   }
-    // }
   });
 }
-
-// spotify.search({ type: "track", query: "sunrise", limit: 20 }, function(
-//   err,
-//   data
-// ) {
-//   if (!err) {
-//     console.log(data);
-//   }
-// });
-console.log("AOI: " + arrayOfInputs[2]);
-spotifyThis(arrayOfInputs[2]);
-
-// function omdb()
+omdb();
 
 // function notepad()
 
@@ -87,56 +130,3 @@ spotifyThis(arrayOfInputs[2]);
 // Read docs
 // Use the get request for this assignment
 // loop thru the responses versus hard coding them
-
-// switch (process.argv) {
-//   case "spotify-this-song" && input2 !== undefined:
-//     spotify.search({ type: "track", query: input2 }, function(err, data) {
-//       if (err) {
-//         return console.log("Spotify Error: " + err);
-//       } else {
-//         // console.log(data.tracks.items[1]);
-//         // Returns the data for the first result
-//         var album = data.tracks.items[1].album.name;
-//         var artist = data.tracks.items[1].artists[0].name;
-//         var title = data.tracks.items[1].name;
-//         var preview = data.tracks.items[1].preview_url;
-//         return console.log(
-//           "Song Title: " +
-//             title +
-//             " Artist(s): " +
-//             artist +
-//             " Album: " +
-//             album +
-//             " Preview Link: " +
-//             preview
-//         );
-//       }
-//     });
-
-//   case "spotify-this-song":
-//     spotify.search({ type: "track", query: "Ace of Base" }, function(
-//       err,
-//       data
-//     ) {
-//       if (err) {
-//         return console.log("Spotify Error: " + err);
-//       } else {
-//         // console.log(data.tracks.items[1]);
-//         // Returns the data for the first result
-//         var album = data.tracks.items[1].album.name;
-//         var artist = data.tracks.items[1].artists[0].name;
-//         var title = data.tracks.items[1].name;
-//         var preview = data.tracks.items[1].preview_url;
-//         return console.log(
-//           "Song Title: " +
-//             title +
-//             " Artist(s): " +
-//             artist +
-//             " Album: " +
-//             album +
-//             " Preview Link: " +
-//             preview
-//         );
-//       }
-//     });
-// }
